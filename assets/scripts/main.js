@@ -33,16 +33,5 @@
     });
   });
 
-  // Simple form validation
-  const form = q('#contact-form');
-  if (form) {
-    form.addEventListener('submit', (e) => {
-      const email = q('#email');
-      const msg = q('#message');
-      if (!email.value.includes('@') || msg.value.trim().length < 5) {
-        e.preventDefault();
-        alert('Please provide a valid email and a message ≥ 5 chars.');
-      }
-    });
-  }
+  // Remove contact-form logic (no form anymore)
 })();

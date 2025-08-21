@@ -68,12 +68,20 @@ body {
 /* Cards */
 .card { padding: var(--space-5); background: #0b0f0c; border: 2px solid var(--gray-3); box-shadow: inset 0 0 0 2px var(--black), 0 0 0 2px var(--green); transition: transform 120ms steps(2); }
 .card:hover { transform: translateY(-2px); box-shadow: var(--glow-1); border-color: var(--green); }
+.card .thumb-area { height:220px; position:relative; overflow:hidden; }
+.card .thumb-area .pixel-bg { opacity:.5; }
+.card .thumb-area .centered { position:absolute; inset:0; display:grid; place-items:center; }
+.card .thumb-area .sprite-demo { width:32px; height:32px; background:linear-gradient(90deg, var(--green), var(--neon-cyan)); box-shadow: var(--glow-2); }
 
-/* Project grid */
-.projects { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: var(--space-4); }
-.project .thumb { width: 100%; aspect-ratio: 16/10; background: linear-gradient(135deg, #071a12, #0a0a0a); border: 2px solid var(--green); position: relative; overflow: hidden; }
-.project .thumb::after { content: ""; position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,255,127,0.1) 0 1px, transparent 1px 3px); mix-blend-mode: screen; animation: crt 4s linear infinite; }
-@keyframes crt { 50% { opacity: 0.6; } }
+/* Spacing utilities */
+.mt-3 { margin-top: 12px; }
+.neon-cyan-text { color: var(--neon-cyan); }
+.font-pixel-12 { font-family: var(--font-pixel); font-size: 12px; }
+.text-neon-green-soft { color: #9effc5; }
+.text-neon-cyan-soft { color:#7dffb6; }
+.font-terminal { font-family: var(--font-terminal); }
+
+/* Projects removed */
 
 /* Terminal about */
 .terminal { font-family: var(--font-terminal); background: #050705; color: var(--neon-green); border: 2px solid var(--green); box-shadow: var(--glow-1); padding: var(--space-5); position: relative; }
@@ -81,20 +89,30 @@ body {
 .cursor { display: inline-block; width: 10px; height: 16px; background: var(--neon-green); animation: blink 1s steps(2, jump-none) infinite; margin-left: 2px; }
 @keyframes blink { 50% { opacity: 0.1; } }
 
+/* Pixel-art emoji in hero */
+.pixel-emoji { font-size: clamp(64px, 20vw, 160px); line-height: 1; display: inline-block; text-shadow: 0 0 2px var(--neon-green), 0 0 6px var(--neon-green), 0 0 12px var(--neon-cyan); filter: saturate(140%); image-rendering: pixelated; animation: emoji-blink 1.2s steps(2, jump-none) infinite; }
+
 /* Social icons - pixel glow */
 .icon { width: 18px; height: 18px; display: inline-block; image-rendering: pixelated; box-shadow: var(--glow-1); }
 .icon.github { background: linear-gradient(90deg, var(--green), var(--neon-cyan)); mask: var(--mask-github); -webkit-mask: var(--mask-github); }
 .icon.mail { background: linear-gradient(90deg, var(--neon-pink), var(--neon-yellow)); mask: var(--mask-mail); -webkit-mask: var(--mask-mail); }
+.icon.telegram { background: linear-gradient(90deg, var(--neon-cyan), var(--neon-green)); mask: var(--mask-telegram); -webkit-mask: var(--mask-telegram); }
 
 /* CSS masks using inline SVG data URIs for pixel icons */
 :root {
   --mask-github: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="%23000" d="M8 0a8 8 0 0 0-2.53 15.59c.4.07.55-.17.55-.38v-1.33c-2.24.49-2.71-1.08-2.71-1.08-.36-.9-.88-1.14-.88-1.14-.72-.49.05-.48.05-.48.8.06 1.23.83 1.23.83.71 1.21 1.86.86 2.31.66.07-.52.28-.86.5-1.05-1.79-.2-3.67-.89-3.67-3.95 0-.87.31-1.58.82-2.14-.08-.2-.36-1.01.08-2.1 0 0 .68-.22 2.22.82a7.72 7.72 0 0 1 4.04 0c1.54-1.04 2.22-.82 2.22-.82.44 1.09.16 1.9.08 2.1.51.56.82 1.27.82 2.14 0 3.07-1.89 3.75-3.69 3.95.29.25.54.73.54 1.47v2.18c0 .21.15.45.55.38A8 8 0 0 0 8 0z"/></svg>');
   --mask-mail: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="%23000" d="M1 3h14v10H1zM2 4v.5l6 4 6-4V4H2z"/></svg>');
+  --mask-telegram: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16"><path fill="%23000" d="M1 8l14-6-3 12-4-3-3 2 1-4 8-5-9 4z"/></svg>');
 }
 
 /* Footer */
 .footer { padding: var(--space-6) var(--space-4); border-top: 2px solid var(--green); background: #070a07; }
 .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: var(--space-4); flex-wrap: wrap; }
+
+/* 404 layout helpers */
+.full-center { min-height: 100vh; display: grid; place-items: center; text-align: center; }
+.size-404 { font-size: 40px; }
+.mt-4 { margin-top: 16px; }
 
 /* Responsive */
 @media (max-width: 900px) {
@@ -103,6 +121,10 @@ body {
 @media (max-width: 600px) {
   .nav a { font-size: var(--font-size-1); padding: var(--space-2); }
   .logo { font-size: var(--font-size-4); }
+  .nav-inner { flex-direction: column; align-items: flex-start; gap: var(--space-2); }
+  .nav-links { display: block; width: 100%; }
+  .nav-links a { display: block; width: 100%; padding: var(--space-2) 0; border-bottom: 1px dashed rgba(0,255,127,0.32); }
+  .nav-links a:last-child { border-bottom: none; }
 }
 
 /* Retro transition effects */

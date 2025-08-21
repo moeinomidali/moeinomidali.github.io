@@ -6,6 +6,9 @@
 @keyframes sprite-walk { 0% { transform: translateX(0); } 50% { transform: translateX(6px); } 100% { transform: translateX(0); } }
 .sprite-walk { animation: sprite-walk 1.2s steps(2) infinite; }
 
+/* Blinking pixel emoji */
+@keyframes emoji-blink { 0%, 100% { opacity: 1; transform: none; } 50% { opacity: .55; transform: translateY(1px); } }
+
 /* Smooth scroll */
 :root { scroll-behavior: smooth; }
 
