@@ -1,0 +1,2 @@
+.skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden}
+.skip-link:focus{left:8px;top:8px;width:auto;height:auto;background:#000;border:2px solid var(--neon-green);color:var(--white);padding:8px;z-index:9999}

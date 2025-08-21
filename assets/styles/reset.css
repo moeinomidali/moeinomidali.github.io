@@ -1,0 +1,7 @@
+/* Minimal reset with pixel rules */
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-font-smoothing: none; -moz-osx-font-smoothing: grayscale; image-rendering: pixelated; }
+body, h1, h2, h3, h4, h5, h6, p, ul, ol, figure { margin: 0; }
+img { max-width: 100%; display: block; image-rendering: pixelated; }
+button, input, textarea, select { font: inherit; }
+:focus { outline: 2px dashed var(--neon-green); outline-offset: 2px; }

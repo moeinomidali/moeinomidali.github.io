@@ -1,0 +1,46 @@
+:root {
+  /* Cyberpunk pixel palette */
+  --black: #0a0a0a;
+  --off-black: #0f1113;
+  --terminal-bg: #0c0f0c;
+  --green: #00ff7f;
+  --green-2: #00d977;
+  --neon-green: #39ff14;
+  --neon-cyan: #00fff0;
+  --neon-pink: #ff00d4;
+  --neon-yellow: #f5ff3b;
+  --gray-1: #1a1a1a;
+  --gray-2: #222;
+  --gray-3: #333;
+  --white: #e6ffe6;
+
+  /* Shadows and glows */
+  --glow-1: 0 0 4px var(--green), 0 0 8px var(--green), 0 0 12px var(--neon-green);
+  --glow-2: 0 0 6px var(--neon-cyan), 0 0 12px var(--neon-cyan), 0 0 16px var(--neon-green);
+  --pink-glow: 0 0 6px var(--neon-pink), 0 0 14px var(--neon-pink), 0 0 20px var(--neon-pink);
+
+  /* Sizing system (in px for pixel-perfect feel) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Typography */
+  --font-pixel: 'Press Start 2P', system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+  --font-terminal: 'VT323', monospace;
+  --font-size-1: 10px;
+  --font-size-2: 12px;
+  --font-size-3: 14px;
+  --font-size-4: 16px;
+  --font-size-5: 20px;
+  --font-size-6: 24px;
+  --font-size-7: 32px;
+  --radius-pixel: 0; /* crisp corners */
+
+  /* Layout */
+  --max-w: 1100px;
+}

@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Nerdy pixel-art personal website with a cyberpunk black-and-green theme. Fully responsive with playful retro animations." />
+  <meta name="theme-color" content="#0a0a0a" />
+  <meta property="og:title" content="Pixel Nerd · Cyberpunk Portfolio" />
+  <meta property="og:description" content="A modern retro-gaming themed portfolio with pixel art, neon glows, and responsive design." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://moeinomidali.github.io/" />
+  <meta property="og:image" content="https://moeinomidali.github.io/assets/images/og-card.svg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <title>Pixel Nerd · Cyberpunk Portfolio</title>
+  <link rel="icon" href="assets/icons/favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="assets/styles/reset.css" />
+  <link rel="stylesheet" href="assets/styles/variables.css" />
+  <link rel="stylesheet" href="assets/styles/base.css" />
+  <link rel="stylesheet" href="assets/styles/animations.css" />
+  <link rel="stylesheet" href="assets/styles/a11y.css" />
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+
+  <!-- Loading Screen -->
+  <div id="loading" class="loading-screen" role="status" aria-live="polite">
+    <div class="loading-logo">BOOTING… <span class="cursor" aria-hidden="true"></span></div>
+  </div>
+
+  <!-- Navigation -->
+  <header class="nav" role="banner">
+    <div class="nav-inner container">
+      <a href="#top" class="logo" aria-label="Home">
+        <span class="sprite sprite-walk" aria-hidden="true"></span>
+        <span>PIXEL NERD</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- Hero -->
+    <section id="top" class="hero" aria-label="Hero">
+      <div class="pixel-bg parallax" data-parallax="0.15" aria-hidden="true"></div>
+      <div class="inner container">
+        <div>
+          <h1 class="hero-title neon">Hello, I'm Moein — a pixel-loving web tinkerer.</h1>
+          <p class="hero-sub">I craft nerdy interfaces with a modern retro-gaming vibe.</p>
+          <div class="cta-row">
+            <a href="#projects" class="btn">View Projects</a>
+            <a href="#contact" class="btn alt">Get in Touch</a>
+          </div>
+        </div>
+        <div class="card pixel-border" aria-hidden="true">
+          <div style="height:220px; position:relative; overflow:hidden;">
+            <div class="pixel-bg" style="opacity:.5"></div>
+            <div style="position:absolute; inset:0; display:grid; place-items:center;">
+              <div class="sprite-walk" style="width:32px; height:32px; background:linear-gradient(90deg, var(--green), var(--neon-cyan)); box-shadow: var(--glow-2);"></div>
+            </div>
+          </div>
+          <p style="margin-top:12px; color:var(--neon-cyan); font-family: var(--font-pixel); font-size:12px;">Animated Pixel Sprite</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- About -->
+    <section id="about" class="section container">
+      <h2 class="neon-cyan">About</h2>
+      <div class="terminal" aria-live="polite">
+        <p>$ whoami</p>
+        <p>› Developer, designer, pixel-pusher</p>
+        <p>$ cat mission.txt</p>
+        <p>› Build delightful, performant UIs that sparkle like neon signs.<span class="cursor" aria-hidden="true"></span></p>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section id="projects" class="section container">
+      <h2 class="neon">Projects</h2>
+      <div class="projects">
+        <article class="project card">
+          <div class="thumb" role="img" aria-label="Sample Project 1 preview"></div>
+          <h3 style="font-family: var(--font-pixel); font-size: 14px; margin-top: 12px;">Terminal UI Kit</h3>
+          <p>A CSS toolkit for retro terminals with pixel-perfect components.</p>
+        </article>
+        <article class="project card">
+          <div class="thumb" role="img" aria-label="Sample Project 2 preview"></div>
+          <h3 style="font-family: var(--font-pixel); font-size: 14px; margin-top: 12px;">Sprite Runner</h3>
+          <p>A tiny game demo showcasing CSS sprite animations.</p>
+        </article>
+        <article class="project card">
+          <div class="thumb" role="img" aria-label="Sample Project 3 preview"></div>
+          <h3 style="font-family: var(--font-pixel); font-size: 14px; margin-top: 12px;">Neon Icons</h3>
+          <p>A set of glowing pixel icons for social links.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section id="contact" class="section container">
+      <h2 class="neon">Contact</h2>
+      <form id="contact-form" class="card" novalidate aria-describedby="contact-help">
+        <div class="grid" style="grid-template-columns: repeat(12, 1fr); gap: 16px;">
+          <div style="grid-column: span 6; min-width: 220px;">
+            <label for="name" class="neon-pink" style="display:block; font-family: var(--font-pixel); font-size:12px; margin-bottom:8px;">Name</label>
+            <input id="name" name="name" type="text" class="pixel-border" style="width:100%; background:#050905; color:var(--white); padding:8px; border-radius:0; border-width:2px;" />
+          </div>
+          <div style="grid-column: span 6; min-width: 220px;">
+            <label for="email" class="neon-pink" style="display:block; font-family: var(--font-pixel); font-size:12px; margin-bottom:8px;">Email</label>
+            <input id="email" name="email" type="email" required class="pixel-border" style="width:100%; background:#050905; color:var(--white); padding:8px; border-radius:0; border-width:2px;" />
+          </div>
+          <div style="grid-column: span 12;">
+            <label for="message" class="neon-pink" style="display:block; font-family: var(--font-pixel); font-size:12px; margin-bottom:8px;">Message</label>
+            <textarea id="message" name="message" rows="5" required class="pixel-border" style="width:100%; background:#050905; color:var(--white); padding:8px; border-radius:0; border-width:2px;"></textarea>
+          </div>
+        </div>
+        <p id="contact-help" style="font-size:12px; color:#7dffb6; margin-top:8px;">Fields marked Email and Message are required.</p>
+        <button class="btn" type="submit" style="margin-top:16px;">Transmit</button>
+      </form>
+
+      <div style="display:flex; gap:16px; align-items:center; margin-top:16px;">
+        <a class="icon github" href="https://github.com/moeinomidali" target="_blank" rel="noopener" aria-label="GitHub"></a>
+        <a class="icon mail" href="mailto:example@example.com" aria-label="Email"></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="footer" role="contentinfo">
+    <div class="footer-inner container">
+      <p style="font-family: var(--font-pixel); font-size: 10px; color: #9effc5;">© <span id="year"></span> Pixel Nerd</p>
+      <p style="font-family: var(--font-terminal); color:#7dffb6;">Made with <span class="neon-pink">❤</span> and way too many pixels.</p>
+    </div>
+  </footer>
+
+  <script src="assets/scripts/main.js" defer></script>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
