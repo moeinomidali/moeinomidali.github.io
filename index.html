@@ -76,23 +76,23 @@
   <a href="#about" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded focus:bg-abyss/80 focus:px-3 focus:py-2 focus:text-gold focus:outline-none focus:ring-2 focus:ring-gold/60">Skip to content</a>
 
   <!-- HERO -->
-  <header id="hero" class="relative min-h-[100svh] w-full overflow-hidden bg-iron text-silver">
+  <header id="hero" class="relative isolate min-h-[100svh] w-full overflow-hidden bg-iron text-silver">
     <!-- Brand / Name -->
-    <div class="absolute left-4 top-4 z-10 md:left-6 md:top-6">
+    <div class="absolute left-4 top-4 z-30 md:left-6 md:top-6">
       <a href="#hero" class="font-gothic tracking-wider2 text-sm text-silver/80 transition hover:text-gold md:text-base" aria-label="Home">moeinovic</a>
     </div>
     <!-- Background image (responsive) -->
-    <picture class="absolute inset-0 -z-10" data-parallax="0.08">
+    <picture class="absolute inset-0 z-0" data-parallax="0.08" aria-hidden="true">
       <source type="image/webp" srcset="/assets/images/hero-320.webp 320w, /assets/images/hero-480.webp 480w, /assets/images/hero-640.webp 640w, /assets/images/hero-1024.webp 1024w, /assets/images/hero-1280.webp 1280w, /assets/images/hero-1600.webp 1600w, /assets/images/hero-1920.webp 1920w" sizes="100vw">
       <img src="/assets/images/hero.png" alt="" fetchpriority="high" decoding="async" class="h-full w-full object-cover" />
     </picture>
     <!-- Cinematic overlays -->
-    <div class="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-abyss/80 to-transparent"></div>
-    <div class="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-abyss/95 via-abyss/80 to-transparent"></div>
-    <div class="pointer-events-none absolute inset-0 bg-hero-gradient mix-blend-overlay"></div>
-    <div class="pointer-events-none absolute -inset-20 blur-2xl opacity-30 bg-[radial-gradient(600px_200px_at_50%_0%,rgba(255,255,255,0.05),transparent)]"></div>
+    <div class="pointer-events-none absolute inset-x-0 top-0 z-10 h-40 bg-gradient-to-b from-abyss/80 to-transparent"></div>
+    <div class="pointer-events-none absolute inset-x-0 bottom-0 z-10 h-64 bg-gradient-to-t from-abyss/95 via-abyss/80 to-transparent"></div>
+    <div class="pointer-events-none absolute inset-0 z-10 bg-hero-gradient mix-blend-overlay"></div>
+    <div class="pointer-events-none absolute -inset-20 z-10 blur-2xl opacity-30 bg-[radial-gradient(600px_200px_at_50%_0%,rgba(255,255,255,0.05),transparent)]"></div>
 
-    <div class="relative mx-auto flex min-h-[100svh] max-w-screen-xl flex-col items-center justify-center px-6 text-center">
+    <div class="relative z-20 mx-auto flex min-h-[100svh] max-w-screen-xl flex-col items-center justify-center px-6 text-center">
       <h1 class="font-gothic tracking-wider2 text-[clamp(2rem,9vw,5rem)] leading-[1.05] drop-shadow-[0_6px_24px_rgba(0,0,0,0.75)] animate-fade-in-slow">
         Our fates lie bound in ruin. Dreams turned to ash, and the sun shall rise no more.
       </h1>
@@ -113,7 +113,7 @@
   <!-- ABOUT -->
   <section id="about" class="cv-auto section-mist relative isolate w-full overflow-hidden bg-obsidian py-20 md:py-28">
     <!-- Background (responsive) -->
-    <picture class="absolute inset-0 -z-10" data-parallax="0.12">
+    <picture class="absolute inset-0 z-0" data-parallax="0.12">
       <source type="image/webp" srcset="/assets/images/library-320.webp 320w, /assets/images/library-480.webp 480w, /assets/images/library-640.webp 640w, /assets/images/library-1024.webp 1024w, /assets/images/library-1280.webp 1280w, /assets/images/library-1600.webp 1600w, /assets/images/library-1920.webp 1920w" sizes="100vw">
       <img src="/assets/images/library.png" alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
     </picture>
@@ -135,7 +135,7 @@
   <!-- CONTACT -->
   <section id="contact" class="cv-auto section-mist relative isolate w-full overflow-hidden bg-iron py-20 md:py-28">
     <!-- Background (responsive) -->
-    <picture class="absolute inset-0 -z-10" data-parallax="0.1">
+    <picture class="absolute inset-0 z-0" data-parallax="0.1">
       <source type="image/webp" srcset="/assets/images/gate-320.webp 320w, /assets/images/gate-480.webp 480w, /assets/images/gate-640.webp 640w, /assets/images/gate-1024.webp 1024w, /assets/images/gate-1280.webp 1280w, /assets/images/gate-1600.webp 1600w, /assets/images/gate-1920.webp 1920w" sizes="100vw">
       <img src="/assets/images/gate.png" alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
     </picture>
@@ -163,7 +163,7 @@
 
   <!-- FOOTER -->
   <footer class="relative isolate w-full overflow-hidden bg-abyss">
-    <picture class="absolute inset-0 -z-10" data-parallax="0.06">
+    <picture class="absolute inset-0 z-0" data-parallax="0.06">
       <source type="image/webp" srcset="/assets/images/lake-320.webp 320w, /assets/images/lake-480.webp 480w, /assets/images/lake-640.webp 640w, /assets/images/lake-1024.webp 1024w, /assets/images/lake-1280.webp 1280w, /assets/images/lake-1600.webp 1600w, /assets/images/lake-1920.webp 1920w" sizes="100vw">
       <img src="/assets/images/lake.png" alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
     </picture>
