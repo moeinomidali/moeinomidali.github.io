@@ -50,9 +50,8 @@ body {
 
 /* Hero */
 .hero { position: relative; overflow: hidden; border-bottom: 2px solid var(--green); min-height: 80vh; display: flex; align-items: center; }
-.hero .inner { display: grid; grid-template-columns: 1.2fr 0.8fr; gap: var(--space-8); align-items: center; padding: var(--space-8) var(--space-4); width: 100%; }
-.hero .inner > div:first-child { display: grid; place-items: center start; }
-.hero .inner > .card { justify-self: end; align-self: center; }
+.hero .inner { display: flex; align-items: center; justify-content: center; padding: var(--space-8) var(--space-4); width: 100%; }
+.hero-text { text-align: center; }
 .hero-title { font-family: var(--font-pixel); font-size: clamp(20px, 5vw, 40px); line-height: 1.2; }
 .hero-title--dark { color: #b7c0b7; text-shadow: 0 0 2px rgba(0,255,127,0.08); filter: none; animation: dark-fade 3.5s ease-in-out infinite alternate; }
 .hero-sub { color: var(--neon-cyan); margin-top: var(--space-4); font-size: var(--font-size-5); }
@@ -312,7 +311,6 @@ body {
 
 /* Avatar Section Styling */
 .avatar-section {
-  display: none;
   padding: var(--space-6) 0;
   border-bottom: 2px solid var(--green);
 }
@@ -322,40 +320,14 @@ body {
   justify-content: center;
 }
 
-.mobile-card {
-  display: none;
-}
-
 /* Enhanced Responsive Design */
 @media (max-width: 900px) {
   .hero { min-height: 70vh; }
-  .hero .inner { 
-    display: flex; 
-    flex-direction: column; 
-    gap: var(--space-6); 
-    text-align: center;
-    justify-content: center;
-  }
-  .hero .inner > div:first-child { display: block; }
-  .hero-text { width: 100%; order: 1; }
   
-  /* Hide hero card on mobile */
-  .hero-card {
-    display: none;
-  }
-  
-  /* Show mobile avatar section */
-  .avatar-section {
-    display: block;
-  }
-  
-  .mobile-card {
-    display: block;
+  .avatar-section .card {
     max-width: var(--card-max-width-mobile);
     margin: 0 auto;
   }
-  
-  .hero-title, .hero-text { text-align: center; }
 
   /* Center About section */
   #about h2 { text-align: center; }
@@ -375,21 +347,11 @@ body {
 
   .hero { min-height: 60vh; }
   .hero .inner { 
-    display: flex; 
-    flex-direction: column; 
-    gap: var(--space-4); 
     padding: var(--space-6) var(--space-4);
-    justify-content: center;
-  }
-  .hero-text { order: 1; }
-  
-  /* Ensure hero card stays hidden on small mobile */
-  .hero-card {
-    display: none;
   }
   
-  /* Adjust mobile card size for smaller screens */
-  .mobile-card {
+  /* Adjust avatar card size for smaller screens */
+  .avatar-section .card {
     max-width: var(--card-max-width-small);
   }
   
