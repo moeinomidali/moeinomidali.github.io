@@ -310,6 +310,22 @@ body {
 .size-404 { font-size: 40px; }
 .mt-4 { margin-top: 16px; }
 
+/* Avatar Section Styling */
+.avatar-section {
+  display: none;
+  padding: var(--space-6) 0;
+  border-bottom: 2px solid var(--green);
+}
+
+.avatar-section .container {
+  display: flex;
+  justify-content: center;
+}
+
+.mobile-card {
+  display: none;
+}
+
 /* Enhanced Responsive Design */
 @media (max-width: 900px) {
   .hero { min-height: 70vh; }
@@ -318,16 +334,27 @@ body {
     flex-direction: column; 
     gap: var(--space-6); 
     text-align: center;
+    justify-content: center;
   }
   .hero .inner > div:first-child { display: block; }
-  .hero-text, .hero .inner > .card { width: 100%; }
-  .hero-text { order: 1; }
-  .hero .inner > .card, .hero .inner > .pixel-border { 
-    order: 2; 
-    align-self: center; 
-    max-width: var(--card-max-width-mobile);
-    margin-top: var(--space-4); 
+  .hero-text { width: 100%; order: 1; }
+  
+  /* Hide hero card on mobile */
+  .hero-card {
+    display: none;
   }
+  
+  /* Show mobile avatar section */
+  .avatar-section {
+    display: block;
+  }
+  
+  .mobile-card {
+    display: block;
+    max-width: var(--card-max-width-mobile);
+    margin: 0 auto;
+  }
+  
   .hero-title, .hero-text { text-align: center; }
 
   /* Center About section */
@@ -352,13 +379,22 @@ body {
     flex-direction: column; 
     gap: var(--space-4); 
     padding: var(--space-6) var(--space-4);
+    justify-content: center;
   }
   .hero-text { order: 1; }
-  .hero .inner > .card, .hero .inner > .pixel-border { 
-    order: 2; 
-    align-self: center; 
+  
+  /* Ensure hero card stays hidden on small mobile */
+  .hero-card {
+    display: none;
+  }
+  
+  /* Adjust mobile card size for smaller screens */
+  .mobile-card {
     max-width: var(--card-max-width-small);
-    margin-top: var(--space-3); 
+  }
+  
+  .avatar-section {
+    padding: var(--space-4) 0;
   }
   
   .hero-title { font-size: clamp(16px, 4vw, 28px); }
