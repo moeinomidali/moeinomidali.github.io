@@ -1,109 +1,206 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="h-full scroll-smooth">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Nerdy pixel-art personal website with a cyberpunk black-and-green theme. Fully responsive with playful retro animations.">
-  <meta name="theme-color" content="#0a0a0a">
-  <meta property="og:title" content="moeinovic">
-  <meta property="og:description" content="A modern retro-gaming themed portfolio with pixel art, neon glows, and responsive design.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://moeinomidali.github.io/">
-  <meta property="og:image" content="https://moeinomidali.github.io/assets/images/og-card.svg">
-  <meta name="twitter:card" content="summary_large_image">
-  <title>moeinovic</title>
-  <link rel="icon" href="assets/icons/favicon.ico">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link rel="stylesheet" href="assets/styles/reset.css">
-  <link rel="stylesheet" href="assets/styles/variables.css">
-  <link rel="stylesheet" href="assets/styles/base.css">
-  <link rel="stylesheet" href="assets/styles/animations.css">
-  <link rel="stylesheet" href="assets/styles/a11y.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0d10">
+  <meta name="description" content="A minimal, atmospheric personal site — dark fantasy inspired.">
+  <link rel="preconnect" href="https://cdn.tailwindcss.com" crossorigin>
+  <title>Dark Fantasy • Personal Site</title>
+
+  <!-- Preload custom font for faster first paint -->
+  <link rel="preload" href="/assets/fonts/Mantinia-Regular.otf" as="font" type="font/otf" crossorigin>
+
+  <!-- Preload hero image for faster Largest Contentful Paint -->
+  <link rel="preload" href="/assets/images/hero-1024.webp" as="image" imagesrcset="/assets/images/hero-640.webp 640w, /assets/images/hero-1024.webp 1024w, /assets/images/hero-1920.webp 1920w" imagesizes="100vw">
+
+  <!-- TailwindCSS CDN (JIT) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            abyss: '#0b0d10',
+            iron: '#121418',
+            obsidian: '#101216',
+            ash: '#8b8f99',
+            silver: '#c0c0c0',
+            gold: '#d4af37',
+          },
+          fontFamily: {
+            gothic: ['"EldenGothic"', 'serif'],
+          },
+          letterSpacing: {
+            wider2: '0.06em',
+          },
+          boxShadow: {
+            glow: '0 0 24px rgba(212, 175, 55, 0.35)',
+            soft: '0 10px 40px rgba(0,0,0,0.55)',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0', transform: 'translateY(8px) scale(0.98)' },
+              '100%': { opacity: '1', transform: 'translateY(0) scale(1)' },
+            },
+            mistPulse: {
+              '0%, 100%': { opacity: '0.2', transform: 'translateY(0)' },
+              '50%': { opacity: '0.35', transform: 'translateY(-8px)' },
+            },
+            slowFloat: {
+              '0%, 100%': { transform: 'translateY(0)' },
+              '50%': { transform: 'translateY(-6px)' },
+            },
+          },
+          animation: {
+            'fade-in-slow': 'fadeIn 1.8s ease-out forwards',
+            'mist': 'mistPulse 9s ease-in-out infinite',
+            'float-slow': 'slowFloat 7s ease-in-out infinite',
+          },
+          backgroundImage: {
+            'hero-gradient': 'radial-gradient(1200px 600px at 50% 10%, rgba(212,175,55,0.08), transparent 60%), radial-gradient(1000px 600px at 50% 90%, rgba(255,255,255,0.05), transparent 60%)',
+          },
+        },
+      },
+      corePlugins: {
+        container: false,
+      }
+    }
+  </script>
+
+  <!-- Custom styles (font-face, backgrounds, effects) -->
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="stylesheet" href="/anim-delay.css">
 </head>
-<body>
-  <a class="skip-link" href="#main">Skip to content</a>
+<body class="h-full bg-abyss text-silver antialiased selection:bg-gold/10 selection:text-gold">
+  <a href="#about" class="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-50 focus:rounded focus:bg-abyss/80 focus:px-3 focus:py-2 focus:text-gold focus:outline-none focus:ring-2 focus:ring-gold/60">Skip to content</a>
 
-  <!-- Loading Screen -->
-  <div id="loading" class="loading-screen" role="status" aria-live="polite">
-    <div class="loading-logo">BOOTING… <span class="cursor" aria-hidden="true"></span></div>
-  </div>
-
-  <!-- Navigation -->
-  <header class="nav">
-    <div class="nav-inner container">
-      <a href="#top" class="logo" aria-label="Home">
-        <span>moeinovic</span>
-      </a>
-      <button class="nav-toggle" type="button" aria-controls="nav-menu" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
-      <nav class="nav-links" id="nav-menu" aria-label="Primary">
-        <a href="#about">About</a>
-        <a href="https://t.me/moeinovic" target="_blank" rel="noopener" aria-label="Telegram" title="Telegram">
-          <span class="icon telegram" aria-hidden="true"></span>
-        </a>
-      </nav>
+  <!-- HERO -->
+  <header id="hero" class="relative min-h-[100svh] w-full overflow-hidden bg-iron text-silver">
+    <!-- Brand / Name -->
+    <div class="absolute left-4 top-4 z-10 md:left-6 md:top-6">
+      <a href="#hero" class="font-gothic tracking-wider2 text-sm text-silver/80 transition hover:text-gold md:text-base" aria-label="Home">moeinovic</a>
     </div>
+    <!-- Background image (responsive) -->
+    <picture class="absolute inset-0 -z-10" data-parallax="0.08">
+      <source type="image/webp" srcset="/assets/images/hero-320.webp 320w, /assets/images/hero-480.webp 480w, /assets/images/hero-640.webp 640w, /assets/images/hero-1024.webp 1024w, /assets/images/hero-1280.webp 1280w, /assets/images/hero-1600.webp 1600w, /assets/images/hero-1920.webp 1920w" sizes="100vw">
+      <img src="/assets/images/hero.png" alt="" fetchpriority="high" decoding="async" class="h-full w-full object-cover" />
+    </picture>
+    <!-- Cinematic overlays -->
+    <div class="pointer-events-none absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-abyss/80 to-transparent"></div>
+    <div class="pointer-events-none absolute inset-x-0 bottom-0 h-64 bg-gradient-to-t from-abyss/95 via-abyss/80 to-transparent"></div>
+    <div class="pointer-events-none absolute inset-0 bg-hero-gradient mix-blend-overlay"></div>
+    <div class="pointer-events-none absolute -inset-20 blur-2xl opacity-30 bg-[radial-gradient(600px_200px_at_50%_0%,rgba(255,255,255,0.05),transparent)]"></div>
+
+    <div class="relative mx-auto flex min-h-[100svh] max-w-screen-xl flex-col items-center justify-center px-6 text-center">
+      <h1 class="font-gothic tracking-wider2 text-[clamp(2rem,9vw,5rem)] leading-[1.05] drop-shadow-[0_6px_24px_rgba(0,0,0,0.75)] animate-fade-in-slow">
+        Our fates lie bound in ruin. Dreams turned to ash, and the sun shall rise no more.
+      </h1>
+      <p class="mt-4 max-w-xl text-sm text-silver/80 md:text-base animate-fade-in-slow anim-delay-200">
+        Minimal. Cinematic. Soulsborne-inspired.
+      </p>
+      <div class="mt-10 flex items-center gap-4 animate-fade-in-slow anim-delay-400">
+        <a href="#about" class="rounded border border-silver/20 bg-abyss/40 px-5 py-2 text-sm tracking-wider2 text-silver/90 backdrop-blur transition hover:border-gold/40 hover:text-gold hover:shadow-glow">About</a>
+        <a href="#contact" class="rounded border border-silver/10 bg-gradient-to-b from-abyss/30 to-abyss/60 px-5 py-2 text-sm tracking-wider2 text-silver/90 backdrop-blur transition hover:border-gold/40 hover:text-gold hover:shadow-glow">Contact</a>
+      </div>
+    </div>
+
+    <!-- Floating mist -->
+    <div class="pointer-events-none absolute inset-x-0 bottom-28 mx-auto h-40 max-w-4xl animate-mist bg-[radial-gradient(60%_60%_at_50%_50%,rgba(255,255,255,0.08),transparent)] blur-2xl"></div>
   </header>
 
-  <main id="main">
-    <!-- Hero -->
-    <section id="top" class="hero" aria-label="Hero">
-      <div class="pixel-bg parallax" data-parallax="0.15" aria-hidden="true"></div>
-      <div class="inner container">
-        <div class="hero-text">
-          <h1 class="hero-title hero-title--dark">Our fates lie bound in ruin.<br>Dreams turned to ash,<br>and the sun shall rise no more.</h1>
-        </div>
+  <main id="content">
+  <!-- ABOUT -->
+  <section id="about" class="cv-auto section-mist relative isolate w-full overflow-hidden bg-obsidian py-20 md:py-28">
+    <!-- Background (responsive) -->
+    <picture class="absolute inset-0 -z-10" data-parallax="0.12">
+      <source type="image/webp" srcset="/assets/images/library-320.webp 320w, /assets/images/library-480.webp 480w, /assets/images/library-640.webp 640w, /assets/images/library-1024.webp 1024w, /assets/images/library-1280.webp 1280w, /assets/images/library-1600.webp 1600w, /assets/images/library-1920.webp 1920w" sizes="100vw">
+      <img src="/assets/images/library.png" alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
+    </picture>
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-abyss/90 via-abyss/70 to-abyss/95"></div>
+
+    <div class="relative mx-auto max-w-screen-lg px-6">
+      <div class="mx-auto max-w-2xl rounded-xl border border-silver/10 bg-abyss/50 p-6 shadow-soft backdrop-blur md:p-10">
+        <h2 class="font-gothic text-3xl text-silver/95 md:text-4xl">geek • creator • thinker</h2>
+        <p class="mt-4 text-silver/80">
+          I learn from ruins and ship quiet tools. I prefer fewer words, deeper work.
+        </p>
+        <p class="mt-2 text-silver/70">
+          Building in the dark, listening for signal — not noise.
+        </p>
       </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Avatar Card Section -->
-    <section class="avatar-section" aria-label="Avatar">
-      <div class="container">
-        <div class="card pixel-border" aria-hidden="true">
-          <div class="thumb-area">
-            <div class="pixel-bg"></div>
-            <div class="centered">
-              <div class="sprite-boy" aria-hidden="true"></div>
-            </div>
-          </div>
-          <!-- Avatar placeholder (replace with your image when ready):
-          <img class="avatar-img" src="assets/images/avatar.png" alt="Your avatar" width="32" height="32" />
-          -->
-          <div class="avatar-slot" aria-hidden="true"></div>
-        </div>
+  <!-- CONTACT -->
+  <section id="contact" class="cv-auto section-mist relative isolate w-full overflow-hidden bg-iron py-20 md:py-28">
+    <!-- Background (responsive) -->
+    <picture class="absolute inset-0 -z-10" data-parallax="0.1">
+      <source type="image/webp" srcset="/assets/images/gate-320.webp 320w, /assets/images/gate-480.webp 480w, /assets/images/gate-640.webp 640w, /assets/images/gate-1024.webp 1024w, /assets/images/gate-1280.webp 1280w, /assets/images/gate-1600.webp 1600w, /assets/images/gate-1920.webp 1920w" sizes="100vw">
+      <img src="/assets/images/gate.png" alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
+    </picture>
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-b from-abyss/92 via-abyss/78 to-abyss/95"></div>
+
+    <div class="relative mx-auto max-w-screen-lg px-6">
+      <div class="mx-auto flex max-w-xl flex-col items-center justify-center rounded-xl border border-silver/10 bg-abyss/50 p-6 shadow-soft backdrop-blur md:flex-row md:justify-between md:p-8">
+        <h3 class="font-gothic text-2xl text-silver/95 md:text-3xl">reach me</h3>
+        <a
+          href="https://t.me/your_username"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Message me on Telegram"
+          class="mt-5 inline-flex items-center gap-2 rounded-lg border border-gold/30 bg-gradient-to-b from-gold/20 to-gold/10 px-6 py-3 text-sm font-semibold tracking-wider2 text-gold shadow-[0_0_30px_rgba(212,175,55,0.15)] backdrop-blur transition hover:shadow-glow focus:outline-none focus-visible:ring-2 focus-visible:ring-gold/60 md:mt-0"
+        >
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="h-5 w-5" aria-hidden="true" focusable="false">
+            <path d="M9.03 12.67 17.5 7.5c.37-.22.76.22.49.56l-5.44 6.59a1 1 0 0 1-1.42.16l-1.64-1.3-.83 3.05c-.11.42-.68.46-.84.06l-1.4-3.43-3.27-1.32c-.43-.17-.4-.79.04-.91l16-4.5c.46-.13.86.34.66.77l-6.92 14.52c-.2.41-.77.45-1 .07l-2.25-3.52Z"/>
+          </svg>
+          Message on Telegram
+        </a>
       </div>
-    </section>
-
-    <!-- About -->
-    <section id="about" class="section container">
-      <h2 class="neon-cyan">About</h2>
-      <div class="pixel-info" aria-live="polite">
-        <div class="sprite-slot"><div class="sprite-boy" aria-hidden="true"></div></div>
-        <section class="code-region" aria-labelledby="profile-title">
-          <span id="profile-title" class="sr-only">Terminal profile output</span>
-          <pre class="code">
-&gt; whoami
-a_computer_specialist(geek=True)
-
-&gt; interests.load()
-['Code', 'Elden Ring', 'Music', 'Football', 'Politics', '...and_everything_in_between']
-
-&gt; status.current()
-"Exploring new worlds, both digital and real."<span class="cursor" aria-hidden="true"></span>
-          </pre>
-        </section>
-      </div>
-    </section>
+    </div>
+  </section>
   </main>
 
-  <footer class="footer">
-    <div class="footer-inner container">
-      <p class="font-pixel-12 text-neon-green-soft">© <span id="year"></span> moeinovic</p>
-      <p class="font-terminal text-neon-cyan-soft">Made with <span class="neon-pink">❤</span> and way too many pixels.</p>
+  <!-- FOOTER -->
+  <footer class="relative isolate w-full overflow-hidden bg-abyss">
+    <picture class="absolute inset-0 -z-10" data-parallax="0.06">
+      <source type="image/webp" srcset="/assets/images/lake-320.webp 320w, /assets/images/lake-480.webp 480w, /assets/images/lake-640.webp 640w, /assets/images/lake-1024.webp 1024w, /assets/images/lake-1280.webp 1280w, /assets/images/lake-1600.webp 1600w, /assets/images/lake-1920.webp 1920w" sizes="100vw">
+      <img src="/assets/images/lake.png" alt="" loading="lazy" decoding="async" class="h-full w-full object-cover" />
+    </picture>
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-t from-abyss/95 via-abyss/90 to-abyss/80"></div>
+
+    <div class="relative mx-auto max-w-screen-xl px-6 py-10 text-center">
+      <p class="text-xs tracking-wider2 text-silver/70 font-gothic">© <span id="year"></span> — All rights reserved.</p>
     </div>
   </footer>
 
-  <script src="assets/scripts/main.js" defer></script>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script>
+    // Set current year
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Lazy-apply heavy backgrounds for performance on mobile
+    // If you have large images, assign via CSS classes below. This script keeps it simple.
+
+    // Optional lightweight parallax effect using transform (better on mobile than background-attachment)
+    const parallaxSections = document.querySelectorAll('[data-parallax]');
+    let ticking = false;
+    function onScroll() {
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const y = window.scrollY;
+          parallaxSections.forEach((el) => {
+            const speed = parseFloat(el.dataset.parallax) || 0.15;
+            el.style.transform = `translateY(${y * speed * -1}px)`;
+          });
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+    const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (!reduceMotion) {
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
+  </script>
 </body>
 </html>
