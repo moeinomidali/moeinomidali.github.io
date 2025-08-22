@@ -43,4 +43,18 @@
 
   /* Layout */
   --max-w: 1100px;
+  
+  /* Animation timing functions for consistency */
+  --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+  
+  /* Card dimensions */
+  --card-max-width: 280px;
+  --card-max-width-mobile: 320px;
+  --card-max-width-small: 280px;
+  
+  /* Avatar sizes */
+  --avatar-size: 48px;
+  --sprite-size: 48px;
+  --sprite-size-small: 32px;
 }

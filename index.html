@@ -33,10 +33,10 @@
   <header class="nav">
     <div class="nav-inner container">
       <a href="#top" class="logo" aria-label="Home">
-        <span class="sprite sprite-walk" aria-hidden="true"></span>
         <span>moeinovic</span>
       </a>
-      <nav class="nav-links" aria-label="Primary">
+      <button class="nav-toggle" type="button" aria-controls="nav-menu" aria-expanded="false" aria-label="Toggle navigation">Menu</button>
+      <nav class="nav-links" id="nav-menu" aria-label="Primary">
         <a href="#about">About</a>
         <a href="https://t.me/moeinovic" target="_blank" rel="noopener" aria-label="Telegram" title="Telegram">
           <span class="icon telegram" aria-hidden="true"></span>
@@ -50,17 +50,20 @@
     <section id="top" class="hero" aria-label="Hero">
       <div class="pixel-bg parallax" data-parallax="0.15" aria-hidden="true"></div>
       <div class="inner container">
-        <div>
-          <div class="pixel-emoji" role="img" aria-label="pixel alien emoji">👾</div>
+        <div class="hero-text">
+          <h1 class="hero-title hero-title--dark">Our fates lie bound in ruin.<br>Dreams turned to ash,<br>and the sun shall rise no more.</h1>
         </div>
         <div class="card pixel-border" aria-hidden="true">
           <div class="thumb-area">
             <div class="pixel-bg"></div>
             <div class="centered">
-              <div class="sprite-walk sprite-demo"></div>
+              <div class="sprite-boy" aria-hidden="true"></div>
             </div>
           </div>
-          <p class="mt-3 neon-cyan-text font-pixel-12">Animated Pixel Sprite</p>
+          <!-- Avatar placeholder (replace with your image when ready):
+          <img class="avatar-img" src="assets/images/avatar.png" alt="Your avatar" width="32" height="32" />
+          -->
+          <div class="avatar-slot" aria-hidden="true"></div>
         </div>
       </div>
     </section>
@@ -68,11 +71,21 @@
     <!-- About -->
     <section id="about" class="section container">
       <h2 class="neon-cyan">About</h2>
-      <div class="terminal" aria-live="polite">
-        <p>$ whoami</p>
-        <p>› Developer, designer, pixel-pusher</p>
-        <p>$ cat mission.txt</p>
-        <p>› Build delightful, performant UIs that sparkle like neon signs.<span class="cursor" aria-hidden="true"></span></p>
+      <div class="pixel-info" aria-live="polite">
+        <div class="sprite-slot"><div class="sprite-boy" aria-hidden="true"></div></div>
+        <section class="code-region" aria-labelledby="profile-title">
+          <span id="profile-title" class="sr-only">Terminal profile output</span>
+          <pre class="code">
+&gt; whoami
+a_computer_specialist(geek=True)
+
+&gt; interests.load()
+['Code', 'Elden Ring', 'Music', 'Football', 'Politics', '...and_everything_in_between']
+
+&gt; status.current()
+"Exploring new worlds, both digital and real."<span class="cursor" aria-hidden="true"></span>
+          </pre>
+        </section>
       </div>
     </section>
   </main>

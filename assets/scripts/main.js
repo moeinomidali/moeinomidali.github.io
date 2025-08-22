@@ -19,6 +19,16 @@
     });
   }, { passive: true });
 
+  // Nav toggle (click to show list)
+  const toggle = q('.nav-toggle');
+  const menu = q('#nav-menu');
+  if (toggle && menu) {
+    toggle.addEventListener('click', () => {
+      const open = menu.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', String(open));
+    });
+  }
+
   // Retro section transitions: glitchy focus on anchor click
   qa('a[href^="#"]').forEach(a => {
     a.addEventListener('click', (e) => {

@@ -6,11 +6,67 @@
 @keyframes sprite-walk { 0% { transform: translateX(0); } 50% { transform: translateX(6px); } 100% { transform: translateX(0); } }
 .sprite-walk { animation: sprite-walk 1.2s steps(2) infinite; }
 
+/* Pixel boy sprite animation (8-bit style walk cycle) */
+@keyframes boy-walk {
+  0% { background-position: 0 0; }
+  25% { background-position: -32px 0; }
+  50% { background-position: -64px 0; }
+  75% { background-position: -96px 0; }
+  100% { background-position: 0 0; }
+}
+
 /* Blinking pixel emoji */
 @keyframes emoji-blink { 0%, 100% { opacity: 1; transform: none; } 50% { opacity: .55; transform: translateY(1px); } }
 
+/* Subtle dark fade for hero title */
+@keyframes dark-fade { 0%, 100% { opacity: 0.95; } 50% { opacity: 0.85; } }
+
+/* Pixel-art border flicker */
+@keyframes pixel-flicker {
+  0%, 100% { opacity: 0.15; filter: none; }
+  50% { opacity: 0.22; filter: saturate(120%); }
+}
+
 /* Smooth scroll */
 :root { scroll-behavior: smooth; }
+
+/* Enhanced pixel border animations - optimized for performance */
+@keyframes pixel-border-pulse {
+  0% { 
+    opacity: 0.2; 
+    transform: scale3d(1, 1, 1);
+  }
+  50% { 
+    opacity: 0.4; 
+    transform: scale3d(1.01, 1.01, 1);
+  }
+  100% { 
+    opacity: 0.2; 
+    transform: scale3d(1, 1, 1);
+  }
+}
+
+@keyframes avatar-slot-pulse {
+  0% { 
+    border-color: var(--neon-cyan);
+    box-shadow: var(--glow-2);
+  }
+  100% { 
+    border-color: var(--neon-green);
+    box-shadow: 0 0 6px var(--neon-green), 0 0 12px var(--neon-green), 0 0 16px var(--neon-cyan);
+  }
+}
+
+@keyframes avatar-question-blink {
+  0%, 100% { 
+    opacity: 1; 
+    transform: scale3d(1, 1, 1);
+  }
+  50% { 
+    opacity: 0.6; 
+    transform: scale3d(0.95, 0.95, 1);
+  }
+}
 
 /* Loading screen scanlines */
 @keyframes scanlines { 0% { background-position: 0 0; } 100% { background-position: 0 8px; } }
