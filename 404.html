@@ -3,19 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0c0f0c">
   <title>404 · Lost in the Grid</title>
   <link rel="stylesheet" href="assets/styles/reset.css">
   <link rel="stylesheet" href="assets/styles/variables.css">
   <link rel="stylesheet" href="assets/styles/base.css">
   <link rel="stylesheet" href="assets/styles/animations.css">
+  <link rel="stylesheet" href="assets/styles/a11y.css">
 </head>
 <body>
-  <section class="hero full-center">
+  <a href="#main" class="skip-link">Skip to content</a>
+  <section id="main" class="hero full-center">
     <div class="pixel-bg" aria-hidden="true"></div>
+    <div class="scanline-overlay" aria-hidden="true"></div>
     <div class="container">
-      <h1 class="neon size-404">404</h1>
+      <h1 class="neon size-404 glitch" data-text="404">404</h1>
       <p class="neon-cyan mt-3">You got lost in the neon maze.</p>
-      <a href="/" class="btn mt-4">Return to moeinovic</a>
+      <a href="/" class="btn mt-4 btn-glow">Return to moeinovic</a>
     </div>
   </section>
 </body>

@@ -70,3 +70,155 @@ body { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; 
 @media (min-width: 1024px) {
   #hero h1 { letter-spacing: 0.04em; }
 }
+
+/* ===========================================
+   ENHANCED VISUAL EFFECTS
+   =========================================== */
+
+/* Hero title shimmer effect */
+.hero-title-shimmer {
+  background: linear-gradient(
+    90deg,
+    #c0c0c0 0%,
+    #c0c0c0 40%,
+    #d4af37 50%,
+    #c0c0c0 60%,
+    #c0c0c0 100%
+  );
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  animation: shimmer 8s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: 200% center; }
+  50% { background-position: -200% center; }
+}
+
+/* Floating particles */
+.particle {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  background: rgba(212, 175, 55, 0.6);
+  border-radius: 50%;
+  box-shadow: 0 0 6px rgba(212, 175, 55, 0.4), 0 0 12px rgba(212, 175, 55, 0.2);
+  animation: floatParticle 12s ease-in-out infinite;
+}
+
+.particle-1 { left: 10%; top: 20%; animation-delay: 0s; animation-duration: 14s; }
+.particle-2 { left: 25%; top: 60%; animation-delay: 2s; animation-duration: 11s; }
+.particle-3 { left: 50%; top: 30%; animation-delay: 4s; animation-duration: 13s; }
+.particle-4 { left: 70%; top: 70%; animation-delay: 1s; animation-duration: 15s; }
+.particle-5 { left: 85%; top: 25%; animation-delay: 3s; animation-duration: 12s; }
+.particle-6 { left: 40%; top: 80%; animation-delay: 5s; animation-duration: 10s; }
+
+@keyframes floatParticle {
+  0%, 100% {
+    transform: translateY(0) translateX(0) scale(1);
+    opacity: 0.3;
+  }
+  25% {
+    transform: translateY(-30px) translateX(10px) scale(1.2);
+    opacity: 0.7;
+  }
+  50% {
+    transform: translateY(-60px) translateX(-5px) scale(0.8);
+    opacity: 0.5;
+  }
+  75% {
+    transform: translateY(-30px) translateX(15px) scale(1.1);
+    opacity: 0.6;
+  }
+}
+
+/* Section divider with decorative line */
+.section-divider-top {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 600px;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(212, 175, 55, 0.2) 20%,
+    rgba(212, 175, 55, 0.5) 50%,
+    rgba(212, 175, 55, 0.2) 80%,
+    transparent 100%
+  );
+  z-index: 20;
+}
+
+.section-divider-top::before {
+  content: "";
+  position: absolute;
+  top: -3px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 8px;
+  height: 8px;
+  background: #d4af37;
+  border-radius: 50%;
+  box-shadow: 0 0 10px rgba(212, 175, 55, 0.6);
+}
+
+/* Scroll reveal animation */
+.reveal-on-scroll {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+}
+
+.reveal-on-scroll.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Enhanced button glow on hover */
+a[href="#about"]:hover,
+a[href="#contact"]:hover {
+  box-shadow: 0 0 20px rgba(212, 175, 55, 0.4), 0 0 40px rgba(212, 175, 55, 0.2);
+}
+
+/* Enhanced card/panel styling */
+.backdrop-blur {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* Subtle vignette effect on hero */
+#hero::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 5;
+  background: radial-gradient(
+    ellipse at center,
+    transparent 50%,
+    rgba(11, 13, 16, 0.4) 100%
+  );
+}
+
+/* Gold accent underline for headings */
+#about h2,
+#contact h3 {
+  position: relative;
+  display: inline-block;
+}
+
+#about h2::after,
+#contact h3::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  width: 60px;
+  height: 2px;
+  background: linear-gradient(90deg, #d4af37, transparent);
+  border-radius: 1px;
+}
