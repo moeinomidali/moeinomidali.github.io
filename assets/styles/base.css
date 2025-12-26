@@ -379,7 +379,7 @@ body {
 .btn-glow {
   position: relative;
   overflow: hidden;
-  transition: all 0.3s ease;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
 }
 
 .btn-glow::before {
