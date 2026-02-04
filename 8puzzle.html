@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl" class="h-full scroll-smooth">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0d10">
+  <meta name="description" content="8-Puzzle Game with A* Algorithm Solver - Step by Step Solution">
+  <title>8 پازل با حل‌کننده A*</title>
+
+  <!-- TailwindCSS CDN (JIT) -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            abyss: '#0b0d10',
+            iron: '#121418',
+            obsidian: '#101216',
+            ash: '#8b8f99',
+            silver: '#c0c0c0',
+            gold: '#d4af37',
+          },
+          fontFamily: {
+            gothic: ['"EldenGothic"', 'serif'],
+            vazir: ['Vazirmatn', 'Tahoma', 'Arial', 'sans-serif'],
+          },
+          letterSpacing: {
+            wider2: '0.06em',
+          },
+          boxShadow: {
+            glow: '0 0 24px rgba(212, 175, 55, 0.35)',
+            soft: '0 10px 40px rgba(0,0,0,0.55)',
+          },
+        },
+      },
+    }
+  </script>
+  
+  <!-- Vazirmatn Persian Font -->
+  <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css" rel="stylesheet">
+  
+  <style>
+    body {
+      font-family: 'Vazirmatn', Tahoma, Arial, sans-serif;
+    }
+    
+    .puzzle-container {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      max-width: 300px;
+      margin: 0 auto;
+    }
+    
+    .puzzle-tile {
+      width: 80px;
+      height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      font-weight: bold;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      user-select: none;
+    }
+    
+    .puzzle-tile:not(.empty):hover {
+      transform: scale(1.05);
+    }
+    
+    .puzzle-tile.empty {
+      background: transparent !important;
+      border: 2px dashed rgba(192, 192, 192, 0.3) !important;
+      cursor: default;
+    }
+    
+    .puzzle-tile:not(.empty) {
+      background: linear-gradient(145deg, #1a1d22, #0d0f12);
+      border: 2px solid rgba(212, 175, 55, 0.4);
+      color: #d4af37;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+    }
+    
+    .step-card {
+      background: rgba(18, 20, 24, 0.8);
+      border: 1px solid rgba(192, 192, 192, 0.15);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 12px;
+      backdrop-filter: blur(10px);
+    }
+    
+    .step-card.current {
+      border-color: rgba(212, 175, 55, 0.5);
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+    }
+    
+    .mini-puzzle {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 3px;
+      width: 90px;
+    }
+    
+    .mini-tile {
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+      border-radius: 4px;
+      background: linear-gradient(145deg, #1a1d22, #0d0f12);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      color: #d4af37;
+    }
+    
+    .mini-tile.empty {
+      background: transparent;
+      border: 1px dashed rgba(192, 192, 192, 0.2);
+      color: transparent;
+    }
+    
+    .solution-steps {
+      max-height: 400px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(212, 175, 55, 0.3) transparent;
+    }
+    
+    .solution-steps::-webkit-scrollbar {
+      width: 6px;
+    }
+    
+    .solution-steps::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    
+    .solution-steps::-webkit-scrollbar-thumb {
+      background: rgba(212, 175, 55, 0.3);
+      border-radius: 3px;
+    }
+    
+    @keyframes pulse-gold {
+      0%, 100% { box-shadow: 0 0 5px rgba(212, 175, 55, 0.3); }
+      50% { box-shadow: 0 0 20px rgba(212, 175, 55, 0.6); }
+    }
+    
+    .solving {
+      animation: pulse-gold 1.5s infinite;
+    }
+    
+    .btn {
+      border-radius: 8px;
+      padding: 12px 24px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    
+    .btn-primary {
+      background: linear-gradient(145deg, rgba(212, 175, 55, 0.2), rgba(212, 175, 55, 0.1));
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      color: #d4af37;
+    }
+    
+    .btn-primary:hover {
+      background: linear-gradient(145deg, rgba(212, 175, 55, 0.3), rgba(212, 175, 55, 0.15));
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.2);
+    }
+    
+    .btn-secondary {
+      background: rgba(192, 192, 192, 0.1);
+      border: 1px solid rgba(192, 192, 192, 0.3);
+      color: #c0c0c0;
+    }
+    
+    .btn-secondary:hover {
+      background: rgba(192, 192, 192, 0.15);
+      border-color: rgba(192, 192, 192, 0.5);
+    }
+    
+    .info-box {
+      background: rgba(18, 20, 24, 0.6);
+      border: 1px solid rgba(192, 192, 192, 0.1);
+      border-radius: 12px;
+      padding: 20px;
+      backdrop-filter: blur(10px);
+    }
+    
+    .arrow-icon {
+      width: 24px;
+      height: 24px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(212, 175, 55, 0.2);
+      border-radius: 50%;
+      color: #d4af37;
+      font-size: 12px;
+    }
+  </style>
+</head>
+<body class="min-h-full bg-abyss text-silver antialiased selection:bg-gold/10 selection:text-gold">
+  
+  <!-- Header -->
+  <header class="fixed top-0 left-0 right-0 z-50 bg-abyss/80 backdrop-blur-md border-b border-silver/10">
+    <div class="max-w-screen-xl mx-auto px-6 py-4 flex items-center justify-between">
+      <a href="/" class="font-gothic tracking-wider text-xl text-silver/80 hover:text-gold transition">moeinovic</a>
+      <h1 class="text-lg text-gold font-semibold">پازل ۸ با الگوریتم A*</h1>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="pt-24 pb-16 px-4 max-w-screen-xl mx-auto">
+    
+    <!-- Algorithm Explanation -->
+    <section class="mb-10 info-box max-w-4xl mx-auto">
+      <h2 class="text-xl font-bold text-gold mb-4">درباره الگوریتم A*</h2>
+      <p class="text-silver/85 leading-relaxed mb-3">
+        الگوریتم A* یکی از بهترین الگوریتم‌های جستجوی آگاهانه است که برای یافتن کوتاه‌ترین مسیر استفاده می‌شود. این الگوریتم ترکیبی از دو معیار را برای انتخاب گره بعدی استفاده می‌کند:
+      </p>
+      <ul class="text-silver/80 space-y-2 mr-4 list-disc list-inside">
+        <li><strong class="text-gold">g(n):</strong> هزینه واقعی رسیدن از حالت اولیه به حالت فعلی</li>
+        <li><strong class="text-gold">h(n):</strong> تخمین هزینه رسیدن از حالت فعلی به حالت هدف (هیوریستیک)</li>
+        <li><strong class="text-gold">f(n) = g(n) + h(n):</strong> تخمین کل هزینه مسیر</li>
+      </ul>
+      <p class="text-silver/85 leading-relaxed mt-3">
+        در این پازل از هیوریستیک "فاصله منهتن" استفاده می‌شود که مجموع فاصله افقی و عمودی هر خانه از موقعیت هدف آن را محاسبه می‌کند.
+      </p>
+    </section>
+
+    <!-- Game Area -->
+    <div class="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+      
+      <!-- Left Column: Puzzle & Controls -->
+      <div class="info-box">
+        <h3 class="text-lg font-bold text-gold mb-4 text-center">پازل</h3>
+        
+        <!-- Puzzle Board -->
+        <div id="puzzle-board" class="puzzle-container mb-6">
+          <!-- Tiles will be rendered here -->
+        </div>
+        
+        <!-- Status -->
+        <div id="status" class="text-center mb-4 text-silver/80">
+          روی کاشی‌ها کلیک کنید یا پازل را حل کنید
+        </div>
+        
+        <!-- Controls -->
+        <div class="flex flex-wrap gap-3 justify-center">
+          <button id="shuffle-btn" class="btn btn-secondary">
+            🔀 درهم‌ریختن
+          </button>
+          <button id="solve-btn" class="btn btn-primary">
+            ⚡ حل با A*
+          </button>
+          <button id="reset-btn" class="btn btn-secondary">
+            🔄 حالت هدف
+          </button>
+        </div>
+        
+        <!-- Step Navigation -->
+        <div id="step-navigation" class="hidden mt-6 pt-4 border-t border-silver/10">
+          <div class="flex items-center justify-center gap-4">
+            <button id="prev-step" class="btn btn-secondary text-sm px-4 py-2">
+              ← قبلی
+            </button>
+            <span id="step-counter" class="text-gold font-semibold">
+              مرحله ۱ از ۱
+            </span>
+            <button id="next-step" class="btn btn-secondary text-sm px-4 py-2">
+              بعدی →
+            </button>
+          </div>
+          <div class="flex justify-center mt-3">
+            <button id="auto-play" class="btn btn-primary text-sm px-4 py-2">
+              ▶ پخش خودکار
+            </button>
+          </div>
+        </div>
+      </div>
+      
+      <!-- Right Column: Solution Steps -->
+      <div class="info-box">
+        <h3 class="text-lg font-bold text-gold mb-4 text-center">مراحل حل</h3>
+        
+        <div id="solution-area">
+          <div id="initial-message" class="text-center text-silver/60 py-8">
+            <p class="text-4xl mb-4">🧩</p>
+            <p>برای مشاهده مراحل حل، دکمه "حل با A*" را بزنید</p>
+          </div>
+          
+          <div id="solution-steps" class="solution-steps hidden">
+            <!-- Steps will be rendered here -->
+          </div>
+          
+          <div id="solution-stats" class="hidden mt-4 pt-4 border-t border-silver/10 text-sm text-silver/70">
+            <!-- Statistics will be rendered here -->
+          </div>
+        </div>
+      </div>
+      
+    </div>
+    
+    <!-- Goal State Reference -->
+    <section class="mt-10 info-box max-w-md mx-auto text-center">
+      <h3 class="text-lg font-bold text-gold mb-4">حالت هدف</h3>
+      <p class="text-silver/70 text-sm mb-4">پازل باید به این شکل مرتب شود:</p>
+      <div class="mini-puzzle mx-auto" style="width: 120px;">
+        <div class="mini-tile" style="width: 36px; height: 36px; font-size: 14px;">1</div>
+        <div class="mini-tile" style="width: 36px; height: 36px; font-size: 14px;">2</div>
+        <div class="mini-tile" style="width: 36px; height: 36px; font-size: 14px;">3</div>
+        <div class="mini-tile" style="width: 36px; height: 36px; font-size: 14px;">4</div>
+        <div class="mini-tile" style="width: 36px; height: 36px; font-size: 14px;">5</div>
+        <div class="mini-tile" style="width: 36px; height: 36px; font-size: 14px;">6</div>
+        <div class="mini-tile" style="width: 36px; height: 36px; font-size: 14px;">7</div>
+        <div class="mini-tile" style="width: 36px; height: 36px; font-size: 14px;">8</div>
+        <div class="mini-tile empty" style="width: 36px; height: 36px; font-size: 14px;"></div>
+      </div>
+    </section>
+    
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-t border-silver/10 py-6 text-center text-silver/50 text-sm">
+    <p>ساخته شده با ❤️ توسط <a href="/" class="text-gold hover:underline">moeinovic</a></p>
+  </footer>
+
+  <script>
+    // 8-Puzzle Game with A* Solver
+    
+    class PuzzleState {
+      constructor(tiles, parent = null, move = null, g = 0) {
+        this.tiles = tiles.slice(); // [0-8], where 0 is empty
+        this.parent = parent;
+        this.move = move;
+        this.g = g; // Cost from start
+        this.h = this.calculateHeuristic(); // Heuristic (Manhattan distance)
+        this.f = this.g + this.h;
+      }
+      
+      calculateHeuristic() {
+        // Manhattan distance heuristic
+        let distance = 0;
+        const goal = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+        
+        for (let i = 0; i < 9; i++) {
+          const tile = this.tiles[i];
+          if (tile !== 0) {
+            const goalIndex = goal.indexOf(tile);
+            const currentRow = Math.floor(i / 3);
+            const currentCol = i % 3;
+            const goalRow = Math.floor(goalIndex / 3);
+            const goalCol = goalIndex % 3;
+            distance += Math.abs(currentRow - goalRow) + Math.abs(currentCol - goalCol);
+          }
+        }
+        return distance;
+      }
+      
+      getKey() {
+        return this.tiles.join(',');
+      }
+      
+      isGoal() {
+        const goal = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+        return this.tiles.every((tile, i) => tile === goal[i]);
+      }
+      
+      getEmptyIndex() {
+        return this.tiles.indexOf(0);
+      }
+      
+      getNeighbors() {
+        const neighbors = [];
+        const emptyIndex = this.getEmptyIndex();
+        const row = Math.floor(emptyIndex / 3);
+        const col = emptyIndex % 3;
+        
+        const moves = [
+          { dr: -1, dc: 0, name: 'پایین', arrow: '↓' }, // Move tile from above down
+          { dr: 1, dc: 0, name: 'بالا', arrow: '↑' },   // Move tile from below up
+          { dr: 0, dc: -1, name: 'راست', arrow: '→' }, // Move tile from left to right
+          { dr: 0, dc: 1, name: 'چپ', arrow: '←' }     // Move tile from right to left
+        ];
+        
+        for (const move of moves) {
+          const newRow = row + move.dr;
+          const newCol = col + move.dc;
+          
+          if (newRow >= 0 && newRow < 3 && newCol >= 0 && newCol < 3) {
+            const newIndex = newRow * 3 + newCol;
+            const newTiles = this.tiles.slice();
+            const movedTile = newTiles[newIndex];
+            
+            // Swap
+            newTiles[emptyIndex] = newTiles[newIndex];
+            newTiles[newIndex] = 0;
+            
+            neighbors.push(new PuzzleState(
+              newTiles,
+              this,
+              { name: move.name, arrow: move.arrow, tile: movedTile },
+              this.g + 1
+            ));
+          }
+        }
+        
+        return neighbors;
+      }
+    }
+    
+    class MinHeap {
+      constructor() {
+        this.heap = [];
+      }
+      
+      push(item) {
+        this.heap.push(item);
+        this.bubbleUp(this.heap.length - 1);
+      }
+      
+      pop() {
+        if (this.heap.length === 0) return null;
+        if (this.heap.length === 1) return this.heap.pop();
+        
+        const min = this.heap[0];
+        this.heap[0] = this.heap.pop();
+        this.bubbleDown(0);
+        return min;
+      }
+      
+      bubbleUp(index) {
+        while (index > 0) {
+          const parentIndex = Math.floor((index - 1) / 2);
+          if (this.heap[parentIndex].f <= this.heap[index].f) break;
+          [this.heap[parentIndex], this.heap[index]] = [this.heap[index], this.heap[parentIndex]];
+          index = parentIndex;
+        }
+      }
+      
+      bubbleDown(index) {
+        const length = this.heap.length;
+        while (true) {
+          let smallest = index;
+          const left = 2 * index + 1;
+          const right = 2 * index + 2;
+          
+          if (left < length && this.heap[left].f < this.heap[smallest].f) {
+            smallest = left;
+          }
+          if (right < length && this.heap[right].f < this.heap[smallest].f) {
+            smallest = right;
+          }
+          if (smallest === index) break;
+          
+          [this.heap[smallest], this.heap[index]] = [this.heap[index], this.heap[smallest]];
+          index = smallest;
+        }
+      }
+      
+      isEmpty() {
+        return this.heap.length === 0;
+      }
+    }
+    
+    function solvePuzzle(initialTiles) {
+      const startState = new PuzzleState(initialTiles);
+      
+      if (startState.isGoal()) {
+        return { path: [startState], nodesExplored: 1 };
+      }
+      
+      const openSet = new MinHeap();
+      openSet.push(startState);
+      
+      const closedSet = new Set();
+      const openSetKeys = new Set([startState.getKey()]);
+      
+      let nodesExplored = 0;
+      
+      while (!openSet.isEmpty()) {
+        const current = openSet.pop();
+        openSetKeys.delete(current.getKey());
+        nodesExplored++;
+        
+        if (current.isGoal()) {
+          // Reconstruct path
+          const path = [];
+          let node = current;
+          while (node) {
+            path.unshift(node);
+            node = node.parent;
+          }
+          return { path, nodesExplored };
+        }
+        
+        closedSet.add(current.getKey());
+        
+        for (const neighbor of current.getNeighbors()) {
+          const key = neighbor.getKey();
+          
+          if (closedSet.has(key)) continue;
+          if (openSetKeys.has(key)) continue;
+          
+          openSet.push(neighbor);
+          openSetKeys.add(key);
+        }
+        
+        // Safety limit
+        if (nodesExplored > 500000) {
+          return { path: null, nodesExplored, error: 'حل نشد: تعداد گره‌های بررسی شده بیش از حد مجاز شد' };
+        }
+      }
+      
+      return { path: null, nodesExplored, error: 'حل نشد: مسیری به هدف وجود ندارد' };
+    }
+    
+    function isSolvable(tiles) {
+      // Count inversions
+      let inversions = 0;
+      for (let i = 0; i < 9; i++) {
+        for (let j = i + 1; j < 9; j++) {
+          if (tiles[i] !== 0 && tiles[j] !== 0 && tiles[i] > tiles[j]) {
+            inversions++;
+          }
+        }
+      }
+      // Puzzle is solvable if inversions is even
+      return inversions % 2 === 0;
+    }
+    
+    // Game State
+    let currentTiles = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+    let solutionPath = null;
+    let currentStep = 0;
+    let autoPlayInterval = null;
+    
+    // DOM Elements
+    const puzzleBoard = document.getElementById('puzzle-board');
+    const statusEl = document.getElementById('status');
+    const shuffleBtn = document.getElementById('shuffle-btn');
+    const solveBtn = document.getElementById('solve-btn');
+    const resetBtn = document.getElementById('reset-btn');
+    const stepNavigation = document.getElementById('step-navigation');
+    const prevStepBtn = document.getElementById('prev-step');
+    const nextStepBtn = document.getElementById('next-step');
+    const stepCounter = document.getElementById('step-counter');
+    const autoPlayBtn = document.getElementById('auto-play');
+    const initialMessage = document.getElementById('initial-message');
+    const solutionSteps = document.getElementById('solution-steps');
+    const solutionStats = document.getElementById('solution-stats');
+    
+    function renderPuzzle(tiles = currentTiles) {
+      puzzleBoard.innerHTML = '';
+      tiles.forEach((tile, index) => {
+        const tileEl = document.createElement('div');
+        tileEl.className = 'puzzle-tile' + (tile === 0 ? ' empty' : '');
+        tileEl.textContent = tile === 0 ? '' : tile;
+        tileEl.dataset.index = index;
+        
+        if (tile !== 0) {
+          tileEl.addEventListener('click', () => moveTile(index));
+        }
+        
+        puzzleBoard.appendChild(tileEl);
+      });
+    }
+    
+    function moveTile(index) {
+      const emptyIndex = currentTiles.indexOf(0);
+      const row = Math.floor(index / 3);
+      const col = index % 3;
+      const emptyRow = Math.floor(emptyIndex / 3);
+      const emptyCol = emptyIndex % 3;
+      
+      // Check if adjacent
+      const isAdjacent = (Math.abs(row - emptyRow) === 1 && col === emptyCol) ||
+                         (Math.abs(col - emptyCol) === 1 && row === emptyRow);
+      
+      if (isAdjacent) {
+        // Swap
+        currentTiles[emptyIndex] = currentTiles[index];
+        currentTiles[index] = 0;
+        renderPuzzle();
+        
+        // Clear solution when user moves
+        clearSolution();
+        
+        // Check if solved
+        if (isGoalState()) {
+          statusEl.innerHTML = '<span class="text-green-400">🎉 تبریک! پازل حل شد!</span>';
+        } else {
+          statusEl.textContent = 'روی کاشی‌ها کلیک کنید یا پازل را حل کنید';
+        }
+      }
+    }
+    
+    function isGoalState() {
+      const goal = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+      return currentTiles.every((tile, i) => tile === goal[i]);
+    }
+    
+    function shufflePuzzle() {
+      clearSolution();
+      
+      do {
+        // Fisher-Yates shuffle
+        const tiles = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+        for (let i = tiles.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [tiles[i], tiles[j]] = [tiles[j], tiles[i]];
+        }
+        currentTiles = tiles;
+      } while (!isSolvable(currentTiles) || isGoalState());
+      
+      renderPuzzle();
+      statusEl.textContent = 'پازل درهم‌ریخته شد! حالا حلش کنید';
+    }
+    
+    function resetPuzzle() {
+      clearSolution();
+      currentTiles = [1, 2, 3, 4, 5, 6, 7, 8, 0];
+      renderPuzzle();
+      statusEl.textContent = 'پازل در حالت هدف است';
+    }
+    
+    function clearSolution() {
+      solutionPath = null;
+      currentStep = 0;
+      stopAutoPlay();
+      
+      stepNavigation.classList.add('hidden');
+      initialMessage.classList.remove('hidden');
+      solutionSteps.classList.add('hidden');
+      solutionStats.classList.add('hidden');
+      solutionSteps.innerHTML = '';
+    }
+    
+    function solve() {
+      if (isGoalState()) {
+        statusEl.innerHTML = '<span class="text-green-400">پازل از قبل حل شده است!</span>';
+        return;
+      }
+      
+      statusEl.innerHTML = '<span class="solving">⏳ در حال حل با الگوریتم A*...</span>';
+      solveBtn.disabled = true;
+      
+      // Use setTimeout to allow UI to update
+      setTimeout(() => {
+        const startTime = performance.now();
+        const result = solvePuzzle(currentTiles.slice());
+        const endTime = performance.now();
+        
+        solveBtn.disabled = false;
+        
+        if (result.path) {
+          solutionPath = result.path;
+          currentStep = 0;
+          
+          statusEl.innerHTML = `<span class="text-green-400">✅ حل شد در ${result.path.length - 1} حرکت!</span>`;
+          
+          renderSolutionSteps(result.path);
+          renderStats(result, endTime - startTime);
+          
+          stepNavigation.classList.remove('hidden');
+          updateStepCounter();
+          
+          // Update puzzle to show first step
+          currentTiles = solutionPath[0].tiles.slice();
+          renderPuzzle();
+        } else {
+          statusEl.innerHTML = `<span class="text-red-400">❌ ${result.error}</span>`;
+        }
+      }, 50);
+    }
+    
+    function renderSolutionSteps(path) {
+      initialMessage.classList.add('hidden');
+      solutionSteps.classList.remove('hidden');
+      solutionSteps.innerHTML = '';
+      
+      path.forEach((state, index) => {
+        const stepCard = document.createElement('div');
+        stepCard.className = 'step-card' + (index === 0 ? ' current' : '');
+        stepCard.id = `step-${index}`;
+        
+        let moveDescription = '';
+        if (index === 0) {
+          moveDescription = '<span class="text-silver/60">حالت اولیه</span>';
+        } else {
+          const move = state.move;
+          moveDescription = `
+            <span class="text-gold">کاشی ${move.tile}</span> را به 
+            <span class="text-gold">${move.name}</span> ببرید
+            <span class="arrow-icon mr-2">${move.arrow}</span>
+          `;
+        }
+        
+        stepCard.innerHTML = `
+          <div class="flex items-center gap-4">
+            <div class="mini-puzzle shrink-0">
+              ${state.tiles.map(t => `
+                <div class="mini-tile${t === 0 ? ' empty' : ''}">${t === 0 ? '' : t}</div>
+              `).join('')}
+            </div>
+            <div class="flex-1">
+              <div class="text-sm font-bold text-silver/90 mb-1">مرحله ${index}</div>
+              <div class="text-sm">${moveDescription}</div>
+              ${index > 0 ? `
+                <div class="text-xs text-silver/50 mt-1">
+                  g=${state.g}, h=${state.h}, f=${state.f}
+                </div>
+              ` : ''}
+            </div>
+          </div>
+        `;
+        
+        stepCard.addEventListener('click', () => goToStep(index));
+        solutionSteps.appendChild(stepCard);
+      });
+    }
+    
+    function renderStats(result, timeMs) {
+      solutionStats.classList.remove('hidden');
+      solutionStats.innerHTML = `
+        <div class="grid grid-cols-2 gap-4 text-center">
+          <div>
+            <div class="text-2xl font-bold text-gold">${result.path.length - 1}</div>
+            <div class="text-xs text-silver/60">تعداد حرکات</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-gold">${result.nodesExplored.toLocaleString('fa-IR')}</div>
+            <div class="text-xs text-silver/60">گره‌های بررسی شده</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-gold">${timeMs.toFixed(1)}</div>
+            <div class="text-xs text-silver/60">میلی‌ثانیه</div>
+          </div>
+          <div>
+            <div class="text-2xl font-bold text-gold">A*</div>
+            <div class="text-xs text-silver/60">الگوریتم</div>
+          </div>
+        </div>
+      `;
+    }
+    
+    function goToStep(step) {
+      if (!solutionPath || step < 0 || step >= solutionPath.length) return;
+      
+      currentStep = step;
+      currentTiles = solutionPath[step].tiles.slice();
+      renderPuzzle();
+      updateStepCounter();
+      
+      // Update current step highlight
+      document.querySelectorAll('.step-card').forEach((card, i) => {
+        card.classList.toggle('current', i === step);
+      });
+      
+      // Scroll to current step
+      const stepEl = document.getElementById(`step-${step}`);
+      if (stepEl) {
+        stepEl.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+      
+      if (step === solutionPath.length - 1) {
+        statusEl.innerHTML = '<span class="text-green-400">🎉 پازل حل شد!</span>';
+      } else {
+        statusEl.textContent = `مرحله ${step} از ${solutionPath.length - 1}`;
+      }
+    }
+    
+    function updateStepCounter() {
+      if (!solutionPath) return;
+      stepCounter.textContent = `مرحله ${currentStep} از ${solutionPath.length - 1}`;
+      prevStepBtn.disabled = currentStep === 0;
+      nextStepBtn.disabled = currentStep === solutionPath.length - 1;
+    }
+    
+    function prevStep() {
+      if (currentStep > 0) {
+        goToStep(currentStep - 1);
+      }
+    }
+    
+    function nextStep() {
+      if (solutionPath && currentStep < solutionPath.length - 1) {
+        goToStep(currentStep + 1);
+      }
+    }
+    
+    function toggleAutoPlay() {
+      if (autoPlayInterval) {
+        stopAutoPlay();
+      } else {
+        startAutoPlay();
+      }
+    }
+    
+    function startAutoPlay() {
+      if (!solutionPath) return;
+      
+      autoPlayBtn.textContent = '⏸ توقف';
+      autoPlayInterval = setInterval(() => {
+        if (currentStep < solutionPath.length - 1) {
+          goToStep(currentStep + 1);
+        } else {
+          stopAutoPlay();
+        }
+      }, 800);
+    }
+    
+    function stopAutoPlay() {
+      if (autoPlayInterval) {
+        clearInterval(autoPlayInterval);
+        autoPlayInterval = null;
+      }
+      autoPlayBtn.textContent = '▶ پخش خودکار';
+    }
+    
+    // Event Listeners
+    shuffleBtn.addEventListener('click', shufflePuzzle);
+    solveBtn.addEventListener('click', solve);
+    resetBtn.addEventListener('click', resetPuzzle);
+    prevStepBtn.addEventListener('click', prevStep);
+    nextStepBtn.addEventListener('click', nextStep);
+    autoPlayBtn.addEventListener('click', toggleAutoPlay);
+    
+    // Keyboard shortcuts
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+        prevStep();
+      } else if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+        nextStep();
+      } else if (e.key === ' ') {
+        e.preventDefault();
+        toggleAutoPlay();
+      }
+    });
+    
+    // Initial render
+    renderPuzzle();
+    
+    // Start with a shuffled puzzle for demo
+    shufflePuzzle();
+  </script>
+</body>
+</html>
