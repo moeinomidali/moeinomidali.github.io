@@ -51,6 +51,7 @@
       gap: 8px;
       max-width: 300px;
       margin: 0 auto;
+      direction: ltr;
     }
     
     .puzzle-tile {
@@ -103,6 +104,7 @@
       grid-template-columns: repeat(3, 1fr);
       gap: 3px;
       width: 90px;
+      direction: ltr;
     }
     
     .mini-tile {
@@ -333,7 +335,8 @@
   </footer>
 
   <script>
-    // 8-Puzzle Game with A* Solver
+    // خب بریم سراغ پیاده‌سازی پازل و الگوریتم A*
+    // TODO: شاید بعداً heuristic های دیگه هم اضافه کنم
     
     class PuzzleState {
       constructor(tiles, parent = null, move = null, g = 0) {
@@ -346,8 +349,8 @@
       }
       
       calculateHeuristic() {
-        // Manhattan distance heuristic
-        let distance = 0;
+        // فاصله منهتن - ساده‌ترین و بهترین گزینه برای این پازل
+        var distance = 0; // از var استفاده کردم چون عادت دارم :)
         const goal = [1, 2, 3, 4, 5, 6, 7, 8, 0];
         
         for (let i = 0; i < 9; i++) {
@@ -361,6 +364,7 @@
             distance += Math.abs(currentRow - goalRow) + Math.abs(currentCol - goalCol);
           }
         }
+        // console.log('Heuristic:', distance); // برای دیباگ
         return distance;
       }
       
@@ -378,11 +382,13 @@
       }
       
       getNeighbors() {
-        const neighbors = [];
+        // پیدا کردن همسایه‌های ممکن
+        let neighbors = [];
         const emptyIndex = this.getEmptyIndex();
-        const row = Math.floor(emptyIndex / 3);
-        const col = emptyIndex % 3;
+        var row = Math.floor(emptyIndex / 3);
+        var col = emptyIndex % 3;
         
+        // اینجا جهت حرکات رو تعریف می‌کنیم
         const moves = [
           { dr: -1, dc: 0, name: 'پایین', arrow: '↓' }, // Tile above empty moves down into empty
           { dr: 1, dc: 0, name: 'بالا', arrow: '↑' },   // Tile below empty moves up into empty
@@ -416,6 +422,7 @@
       }
     }
     
+    // Min Heap برای priority queue - خودم نوشتم چون نیاز به کتابخونه نداشتم
     class MinHeap {
       constructor() {
         this.heap = [];
@@ -437,8 +444,9 @@
       }
       
       bubbleUp(index) {
+        // بردن عنصر به بالای heap
         while (index > 0) {
-          const parentIndex = Math.floor((index - 1) / 2);
+          var parentIndex = Math.floor((index - 1) / 2);
           if (this.heap[parentIndex].f <= this.heap[index].f) break;
           [this.heap[parentIndex], this.heap[index]] = [this.heap[index], this.heap[parentIndex]];
           index = parentIndex;
@@ -470,10 +478,13 @@
       }
     }
     
+    // تابع اصلی حل پازل با A*
     function solvePuzzle(initialTiles) {
+      console.log('شروع حل پازل...');
       const startState = new PuzzleState(initialTiles);
       
       if (startState.isGoal()) {
+        console.log('پازل از قبل حل شده!');
         return { path: [startState], nodesExplored: 1 };
       }
       
@@ -484,6 +495,7 @@
       const openSetKeys = new Set([startState.getKey()]);
       
       let nodesExplored = 0;
+      // FIXME: شاید بعداً یه progress bar اضافه کنم
       
       while (!openSet.isEmpty()) {
         const current = openSet.pop();
@@ -491,7 +503,8 @@
         nodesExplored++;
         
         if (current.isGoal()) {
-          // Reconstruct path
+          // یافتیم! حالا باید مسیر رو از آخر به اول بسازیم
+          console.log('پازل حل شد! گره‌های بررسی شده:', nodesExplored);
           const path = [];
           let node = current;
           while (node) {
@@ -513,8 +526,9 @@
           openSetKeys.add(key);
         }
         
-        // Safety limit to prevent browser freeze
+        // یه محدودیت گذاشتم که مرورگر هنگ نکنه (یه بار باهاش مشکل داشتم!)
         if (nodesExplored > 100000) {
+          console.warn('خیلی طول کشید، متوقف شد');
           return { path: null, nodesExplored, error: 'حل نشد: تعداد گره‌های بررسی شده بیش از حد مجاز شد' };
         }
       }
@@ -522,8 +536,9 @@
       return { path: null, nodesExplored, error: 'حل نشد: مسیری به هدف وجود ندارد' };
     }
     
+    // این تابع چک می‌کنه که پازل اصلاً قابل حل هست یا نه
+    // خیلی وقت گذاشتم که این قضیه inversion رو فهمیدم!
     function isSolvable(tiles) {
-      // Count inversions
       let inversions = 0;
       for (let i = 0; i < 9; i++) {
         for (let j = i + 1; j < 9; j++) {
@@ -532,15 +547,15 @@
           }
         }
       }
-      // Puzzle is solvable if inversions is even
+      // اگه تعداد inversion ها زوج باشه، قابل حله
       return inversions % 2 === 0;
     }
     
-    // Game State
+    // متغیرهای global بازی
     let currentTiles = [1, 2, 3, 4, 5, 6, 7, 8, 0];
     let solutionPath = null;
     let currentStep = 0;
-    let autoPlayInterval = null;
+    let autoPlayInterval = null; // برای پخش خودکار
     
     // DOM Elements
     const puzzleBoard = document.getElementById('puzzle-board');
@@ -557,8 +572,9 @@
     const solutionSteps = document.getElementById('solution-steps');
     const solutionStats = document.getElementById('solution-stats');
     
+    // رسم پازل روی صفحه
     function renderPuzzle(tiles = currentTiles) {
-      puzzleBoard.innerHTML = '';
+      puzzleBoard.innerHTML = ''; // پاک کردن قبلی‌ها
       tiles.forEach((tile, index) => {
         const tileEl = document.createElement('div');
         tileEl.className = 'puzzle-tile' + (tile === 0 ? ' empty' : '');
@@ -575,19 +591,18 @@
     
     function moveTile(index) {
       const emptyIndex = currentTiles.indexOf(0);
-      const row = Math.floor(index / 3);
-      const col = index % 3;
-      const emptyRow = Math.floor(emptyIndex / 3);
-      const emptyCol = emptyIndex % 3;
+      var row = Math.floor(index / 3);
+      var col = index % 3;
+      var emptyRow = Math.floor(emptyIndex / 3);
+      var emptyCol = emptyIndex % 3;
       
-      // Check if adjacent
+      // چک می‌کنیم که کاشی کنار خانه خالی هست یا نه
       const isAdjacent = (Math.abs(row - emptyRow) === 1 && col === emptyCol) ||
                          (Math.abs(col - emptyCol) === 1 && row === emptyRow);
       
       if (isAdjacent) {
-        // Swap
-        currentTiles[emptyIndex] = currentTiles[index];
-        currentTiles[index] = 0;
+        // جابجایی کاشی با خانه خالی
+        [currentTiles[emptyIndex], currentTiles[index]] = [currentTiles[index], currentTiles[emptyIndex]];
         renderPuzzle();
         
         // Clear solution when user moves
@@ -610,8 +625,9 @@
     function shufflePuzzle() {
       clearSolution();
       
+      // تا وقتی که یه حالت قابل حل و غیر از هدف پیدا نکنیم، ادامه می‌دیم
       do {
-        // Fisher-Yates shuffle
+        // استفاده از الگوریتم Fisher-Yates برای shuffle
         const tiles = [1, 2, 3, 4, 5, 6, 7, 8, 0];
         for (let i = tiles.length - 1; i > 0; i--) {
           const j = Math.floor(Math.random() * (i + 1));
@@ -644,15 +660,17 @@
     }
     
     function solve() {
+      // شروع حل با A*
       if (isGoalState()) {
         statusEl.innerHTML = '<span class="text-green-400">پازل از قبل حل شده است!</span>';
         return;
       }
+      console.log('کلیک روی حل - شروع...');
       
       statusEl.innerHTML = '<span class="solving">⏳ در حال حل با الگوریتم A*...</span>';
       solveBtn.disabled = true;
       
-      // Use setTimeout to allow UI to update
+      // یه setTimeout می‌ذارم که UI فرصت آپدیت شدن داشته باشه
       setTimeout(() => {
         const startTime = performance.now();
         const result = solvePuzzle(currentTiles.slice());
@@ -682,6 +700,7 @@
     }
     
     function renderSolutionSteps(path) {
+      // نمایش مراحل حل
       initialMessage.classList.add('hidden');
       solutionSteps.classList.remove('hidden');
       solutionSteps.innerHTML = '';
@@ -808,6 +827,7 @@
       if (!solutionPath) return;
       
       autoPlayBtn.textContent = '⏸ توقف';
+      // هر 800 میلی‌ثانیه یه مرحله جلو می‌ریم
       autoPlayInterval = setInterval(() => {
         if (currentStep < solutionPath.length - 1) {
           goToStep(currentStep + 1);
@@ -825,7 +845,7 @@
       autoPlayBtn.textContent = '▶ پخش خودکار';
     }
     
-    // Event Listeners
+    // اتصال eventها به دکمه‌ها
     shuffleBtn.addEventListener('click', shufflePuzzle);
     solveBtn.addEventListener('click', solve);
     resetBtn.addEventListener('click', resetPuzzle);
@@ -833,7 +853,7 @@
     nextStepBtn.addEventListener('click', nextStep);
     autoPlayBtn.addEventListener('click', toggleAutoPlay);
     
-    // Keyboard shortcuts
+    // کلیدهای میانبر - خودم اضافه کردم چون راحت‌تره
     document.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
         prevStep();
@@ -845,11 +865,13 @@
       }
     });
     
-    // Initial render
+    // رندر اولیه
     renderPuzzle();
     
-    // Start with a shuffled puzzle for demo
+    // یه پازل درهم‌ریخته برای شروع
     shufflePuzzle();
+    
+    console.log('بازی آماده است!');
   </script>
 </body>
 </html>
