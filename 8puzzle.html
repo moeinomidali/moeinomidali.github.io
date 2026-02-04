@@ -384,10 +384,10 @@
         const col = emptyIndex % 3;
         
         const moves = [
-          { dr: -1, dc: 0, name: 'پایین', arrow: '↓' }, // Move tile from above down
-          { dr: 1, dc: 0, name: 'بالا', arrow: '↑' },   // Move tile from below up
-          { dr: 0, dc: -1, name: 'راست', arrow: '→' }, // Move tile from left to right
-          { dr: 0, dc: 1, name: 'چپ', arrow: '←' }     // Move tile from right to left
+          { dr: -1, dc: 0, name: 'پایین', arrow: '↓' }, // Tile above empty moves down into empty
+          { dr: 1, dc: 0, name: 'بالا', arrow: '↑' },   // Tile below empty moves up into empty
+          { dr: 0, dc: -1, name: 'راست', arrow: '→' }, // Tile left of empty moves right into empty
+          { dr: 0, dc: 1, name: 'چپ', arrow: '←' }     // Tile right of empty moves left into empty
         ];
         
         for (const move of moves) {
@@ -513,8 +513,8 @@
           openSetKeys.add(key);
         }
         
-        // Safety limit
-        if (nodesExplored > 500000) {
+        // Safety limit to prevent browser freeze
+        if (nodesExplored > 100000) {
           return { path: null, nodesExplored, error: 'حل نشد: تعداد گره‌های بررسی شده بیش از حد مجاز شد' };
         }
       }
@@ -773,13 +773,13 @@
       if (step === solutionPath.length - 1) {
         statusEl.innerHTML = '<span class="text-green-400">🎉 پازل حل شد!</span>';
       } else {
-        statusEl.textContent = `مرحله ${step} از ${solutionPath.length - 1}`;
+        statusEl.textContent = `مرحله ${step.toLocaleString('fa-IR')} از ${(solutionPath.length - 1).toLocaleString('fa-IR')}`;
       }
     }
     
     function updateStepCounter() {
       if (!solutionPath) return;
-      stepCounter.textContent = `مرحله ${currentStep} از ${solutionPath.length - 1}`;
+      stepCounter.textContent = `مرحله ${currentStep.toLocaleString('fa-IR')} از ${(solutionPath.length - 1).toLocaleString('fa-IR')}`;
       prevStepBtn.disabled = currentStep === 0;
       nextStepBtn.disabled = currentStep === solutionPath.length - 1;
     }
